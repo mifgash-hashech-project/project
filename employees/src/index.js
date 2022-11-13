@@ -6,7 +6,7 @@ app.use(express.json());
 app.use(cors());
 const { port } = keys;
 
-const employeesRouter = require('./routers/getEmployees');
+const employeesRouter = require('./routers/employees');
 
 app.use(employeesRouter);
 

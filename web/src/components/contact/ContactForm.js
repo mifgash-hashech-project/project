@@ -4,6 +4,7 @@ export default function ContactForm() {
 
     return (
         <table className="contact3" dir="rtl">
+            <tbody>
             <tr>
                 <td><input type="text" placeholder="שם פרטי"/></td>
                 <td><input type="text" placeholder="שם משפחה"/></td>
@@ -14,6 +15,7 @@ export default function ContactForm() {
                 <td><input type="text" placeholder="מספר בית"/></td>
                 <td><input type="number" placeholder="מיקוד"/></td>
             </tr>
+            </tbody>
         </table>
 
     )

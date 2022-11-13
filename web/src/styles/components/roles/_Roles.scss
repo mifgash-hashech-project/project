@@ -1,4 +1,77 @@
 .roles__container{
   @extend %page;
+  align-items: center;
 
+}
+
+.employees__buttons_container{
+  display: flex;
+  align-items: center;
+  button{
+    width: 100%;
+    height: 4rem;
+  }
+}
+
+.employees__container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.employee{
+  margin: 5px;
+  padding: 5px;
+  border: 0.125rem solid $myDarkBlue;
+  border-radius: 0.5rem;
+  width: 24vw;
+}
+.employee:hover{
+  box-shadow: 3px 3px 1px 1px black;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.Profiles {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Profile {
+  width: 50%;
+  display: inline-block;
+  text-align: center;
+  margin:15px;
+  padding: 15px;
+  background-color: wheat;
+}
+
+.Profile img {
+  width: 400px;
+  height:300px;
+}
+
+.form__container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  form {
+    display: flex;
+    align-items: center;
+    border: 0.125rem solid $myDarkBlue;
+    border-radius: 0.5rem;
+    margin: 5px;
+    padding: 5px;
+
+  }
+  form input {
+    padding: 2.5px;
+    border-radius: 0.5rem;
+    width: 100%;
+  }
 }
