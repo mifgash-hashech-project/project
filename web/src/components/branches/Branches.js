@@ -1,6 +1,6 @@
 import React from 'react'
-import Product from "../products/Product";
 import Branch from "./Branch";
+import {nanoid} from "nanoid";
 
 const branchesList = [
     {
@@ -70,14 +70,15 @@ export default function Branches() {
         <div className="branches__container">
             <h1 className="tavla ">הסניפים שלנו</h1>
             <table className="snifim">
-                <tr>
+                <thead><tr>
                     <th>שעות פתיחה</th>
                     <th>רחוב</th>
                     <th>סניף</th>
                 </tr>
+                </thead>
                 {branchesList.length > 0 && branchesList.map((e, i) => (
                     <Branch name={branchesList[i].name} address={branchesList[i].address}
-                            timeSlots={branchesList[i].timeSlots}/>
+                            timeSlots={branchesList[i].timeSlots} key={nanoid()}/>
                 ))}
 
 

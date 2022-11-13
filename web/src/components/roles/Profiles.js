@@ -1,5 +1,6 @@
 import React from 'react'
 import Profile from "./Profile";
+import {nanoid} from "nanoid";
 
 
 export default function Profiles() {
@@ -15,7 +16,8 @@ export default function Profiles() {
                 <Profile
                     name={profilesList[i].name}
                     role={profilesList[i].role}
-                    logo={profilesList[i].logo}/>
+                    logo={profilesList[i].logo}
+                    key={nanoid()}/>
             ))}
 
         </div>

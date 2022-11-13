@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function WantAds({}) {
+export default function WantAds() {
 
     return (
         <div className="wantads__container">

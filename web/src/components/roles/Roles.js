@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {addEmployees, getEmployees, modifyEmployee} from "../../server/employees";
+import {getEmployees} from "../../server/employees";
 import Employees from "./Employees";
 import Profiles from "./Profiles";
 import UpdateEmployee from "./UpdateEmployee";

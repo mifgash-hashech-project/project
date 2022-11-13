@@ -27,6 +27,12 @@
   background-color: grey;
 }
 
+.Product:hover{
+  box-shadow: 3px 3px 1px 1px black;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
 .Product-img {
   width: 200px;
   height: 200px;

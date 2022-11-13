@@ -49,6 +49,3 @@ export const getAllData = async () => {
     }
 
 };
-const getArticleByid = (articleID, articles) => {
-    return articles.filter(({ id }) => (id === articleID))[0];
-};

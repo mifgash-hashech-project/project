@@ -9,11 +9,13 @@ const getTimeSlot = ({weekDay, friday, saturday}) => {
 export default function Branch({name, address, timeSlots}) {
 
     return (
+        <tbody>
         <tr>
             <td>{getTimeSlot(timeSlots)}</td>
             <td>{address}</td>
             <td>{name}</td>
         </tr>
+        </tbody>
 
     )
 }

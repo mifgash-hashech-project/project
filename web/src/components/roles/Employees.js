@@ -1,5 +1,6 @@
 import React from 'react'
 import Employee from "./Employee";
+import {nanoid} from "nanoid";
 
 export default function Employees({employeesList}) {
 
@@ -13,6 +14,7 @@ export default function Employees({employeesList}) {
                     phone={employeesList[i].phone}
                     email={employeesList[i].email}
                     hobbies={employeesList[i].hobbies}
+                    key={nanoid()}
                 />
             ))}
         </div>

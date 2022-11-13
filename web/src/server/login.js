@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const serverURL = `/server`;
+export const serverURL = `http://localhost`;
 
 export const loginUser = async (request) => {
     try {
