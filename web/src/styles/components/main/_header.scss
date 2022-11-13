@@ -1,0 +1,176 @@
+.header__container{
+  position: fixed;
+  z-index:10;
+  top: 0;
+  width: 100%;
+  max-height: 4rem
+}
+
+.header{
+  padding: 0.25rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  // justify-content: space-between;
+  background: darkgray;
+  z-index: 100;  
+}
+
+.nav__bar{
+  right: -8vw;
+  position: relative;
+  display: flex;
+  color: black;
+  align-items: center;
+  justify-self: flex-end;
+  padding:0 1rem;
+  img{
+    height: 2rem;
+    width: 1.5rem;
+    cursor: pointer;
+  
+  }
+}
+
+.nav__link{
+display: flex;
+flex-direction: column;
+align-items: center;
+text-align: center;
+justify-content: center;
+}
+
+.a_nav{
+  color: black;
+  min-width:4.5rem;
+}
+
+.a_nav__active{
+margin-top: 0.5rem;
+font-weight: 550;
+}
+
+.a_nav__active::after{
+  display: block;
+  margin-top: 0.5rem;
+  height: 0.125rem;
+  background-color: black;
+  content: "";
+  align-self: center;
+}
+
+.header__logo{
+  margin-left: 1rem;
+  padding-right: 1rem;;
+  height: 3rem;
+  max-width: 25vw;
+  cursor: pointer;
+}
+.header__search_bar{
+  padding: 0.5rem;
+}
+
+.bar{
+  display: flex;
+  width:50vw;
+  align-items: center;
+  justify-items: center;
+  border-radius: 2rem;
+  background-color: white;
+  height: 2.5rem;
+  padding: 1rem;
+  
+  .find-icon{
+height: 1.5rem;
+width: 1.5rem;
+  }
+  input{
+    border: none;
+    width: 100%;
+    padding: 0.5rem;
+  }
+
+  .cancel-query{
+    background-color: #ccc;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    color: $myDarkBlue;
+    text-align: center;
+  }
+
+.cancel-query::before,
+.cancel-query::after{
+    content: '';
+    width: 0.75rem;
+    background-color: $myDarkBlue;
+    position:absolute;
+    height: 0.075rem;
+    transition: all .25s ease-in-out;
+    margin-top: 0.75rem;
+    margin-left: -0.35rem;
+    
+}
+
+.cancel-query::before{
+  transform: rotate(45deg);
+}
+
+.cancel-query::after{
+  transform: rotate(-45deg) ;
+}
+}
+
+.cancel-item-serach{
+  width: 100%;
+  text-align: center;
+  color: black;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.logout{
+  padding: 0.5rem;
+  position: fixed;
+  top:4rem;
+  right: 0;
+  height: 2rem;
+  width: 4.5rem;
+  background: $myBlue;
+  color: $myDarkBlue;
+  border-radius: 0.5rem 0 0 0.5rem;
+  cursor: pointer;
+  &:hover{
+    background: $myDarkBlue;
+  color: $myBlue;
+  }
+
+}
+
+@media only screen and (max-width: 1200px) {
+  .nav__bar{
+    right: 2vw;
+  }
+}
+
+@media only screen and (max-width: 820px) {
+  .header{
+    justify-content: flex-start;
+  }
+  
+  .nav__bar{
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 460px) {
+  .bar{
+    input{
+      font-size:73%
+    }
+  }
+  .cancel-item-serach{
+    font-size: 70%;
+  }
+}

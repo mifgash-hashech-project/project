@@ -1,0 +1,25 @@
+.wantads__container{
+  @extend %page;
+  align-items: flex-start;
+  flex-direction: column;
+  overflow-y: auto;
+  width:100vw;
+  max-width:100vw;
+  background-size: cover;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  background-image: url("Search.jpg");
+
+}
+
+.drushim-title
+{
+  color:tomato
+}
+.tele-number
+{
+  color: rgb(47, 5, 199)
+}
+
+

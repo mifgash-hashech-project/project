@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap');
+@import "base/base";
+@import "base/settings";
+@import "components/main/toggle";
+@import "components/main/header";
+@import "components/main/footer";
+@import "components/main/notFound-page";
+@import "components/main/loader";
+@import "components/main/element_loader";
+@import "components/main/typing";
+@import "components/main/avatar";
+@import "components/main/item-search";
+@import "components/main/modal";
+
+@import "components/products/Products";
+@import "components/want-ads/WantAds";
+@import "components/about/About";
+
+@import "components/account/accountMain";
+@import "components/account/AdminAccount";
+@import "components/account/UpdateTheater";
+@import "components/account/AddTheatersItems";
+@import "components/account/DeleteItems";
+@import "components/account/ManageArticle";
+@import "components/account/ManageMovies";
+
+@import "components/news/newsMain";
+@import "components/news/Article";
+
+@import "components/login/login";
+
+@import 'components/branches/Branches';
+
+
+@import 'components/contact/Contact';
+
+
+@import 'components/shifts/Shifts';
+
+
+@import 'components/roles/Roles';

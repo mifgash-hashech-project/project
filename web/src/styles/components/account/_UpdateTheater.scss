@@ -1,0 +1,125 @@
+.movies-in-theater{
+    display: flex;
+    flex-direction: column;
+    max-height: 40vh;
+    overflow-y: auto;
+    padding: 0.5rem 0;
+    .listed-movie{
+        padding: 0.25rem;
+        display: flex;
+        align-items: center;
+        .remove{
+            padding: 0.5rem;
+            margin-right:0.25rem;
+            border-radius: 0.5rem;
+            background: $myRed;
+            color: darkred;
+            cursor: pointer;
+            &:hover{
+                background: darkred;
+                color: $myRed;   
+            }
+        }
+    }
+    .add-more-movies{
+        margin: 0;
+        width: 100%;
+    }
+    .more-movies-container{
+        height: 20vh;
+        overflow-y: auto;
+        background: rgba(255, 255, 255, 0.479);
+        border-radius: 0.5rem;
+    }
+input{
+    width: unset;
+    justify-content: unset;
+    display: unset;
+}
+    .query{
+        padding: 0.5rem;
+        input{
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            border:none;
+            &:active{
+                outline: none;
+            }
+        }
+    }
+}
+
+.update-available-timeslots{
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+}
+
+.update-time-slot__container{
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 0.125rem $myDarkBlue solid;padding: 0.25rem;
+    margin: 0.5rem 0;
+    .update-time-slot__timeslots{
+        overflow-x: auto;
+    }
+}
+
+.day-slot{
+    width:100%;
+ display: flex;
+ align-items: center;
+ *{
+     padding: 0.5rem;
+ }
+}
+.add-day__container{
+    display: flex;
+    padding: 0.5rem 0;
+    .add-time-slot{
+        display: flex;
+        overflow-x: auto;
+        
+            .add-time-slot__hour{
+                margin: 0 0.25rem;
+                padding: 0.125rem;
+                border-radius: 0.25rem;
+                border: 0.0125rem $myDarkBlue solid;
+                display: flex;
+                 &:hover{
+                     background: $myRed;
+                     cursor: pointer;
+                 }
+                select{
+                    min-width:3rem;
+                    margin: 0 0.125rem;
+                }
+            }
+    }
+    .add-time-slot__add-hour{
+                @extend .modal__option;
+                border-radius: 0.5rem;
+            }
+    }
+button.add-day__button{
+    margin: 0.5rem 0;
+    width:100%;
+    background: $myBlue;
+    color:unset;
+    &:hover{
+       background: $myDarkBlue;
+    color:white; 
+    
+    }
+    &:disabled{
+        background: #ccc;
+        color:unset;
+    }
+}
+button.add-day__submit{
+    padding: 0.5rem;
+    margin:0;
+    width: 4rem;
+}

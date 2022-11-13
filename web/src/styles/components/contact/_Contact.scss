@@ -1,0 +1,18 @@
+.contact__container{
+  @extend %page;
+  align-items: center;
+}
+
+.contact
+{
+  text-align: center;
+}
+.contact2
+{
+  width: 100%;border: black
+}
+.contact3
+{
+  margin-right: auto;
+  margin-left: auto;
+}
