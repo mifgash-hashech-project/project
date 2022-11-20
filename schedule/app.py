@@ -31,7 +31,7 @@ def model_problem(raw_worker_data):
                         2 + day * 2 + 1]))
                 )
 
-    quarters = pandas.read_excel("./quarter.xlsx", header=0).loc[0].tolist()
+    quarters = pandas.read_excel("./schedule/quarter.xlsx", header=0).loc[0].tolist()
 
     problem = pulp.LpProblem("ScheduleWorkers", pulp.LpMinimize)
 
@@ -168,27 +168,39 @@ def init_schedule():
 
 @app.route("/", methods=["POST"])
 def model():
-    request_data = request.data
-    raw_worker_data = json.loads(request_data)
-    problem, workers_data = model_problem(raw_worker_data)
-    schedule = init_schedule()
-    for worker_name in workers_data.keys():
+    try:
+        request_data = request.data
+        raw_worker_data = json.loads(request_data)['data']
+        print(raw_worker_data)
+        problem, workers_data = model_problem(raw_worker_data)
+        schedule = init_schedule()
+        for worker_name in workers_data.keys():
 
-        workers_data[worker_name].pop("weekend_periods")
-        workers_data[worker_name].pop("worked_periods")
-        workers_data[worker_name].pop("rest_periods")
-        workers_data[worker_name].pop("period_avail")
+            workers_data[worker_name].pop("weekend_periods")
+            workers_data[worker_name].pop("worked_periods")
+            workers_data[worker_name].pop("rest_periods")
+            workers_data[worker_name].pop("period_avail")
 
-        worker_schedule = workers_data[worker_name]["schedule"]
-        for shift in worker_schedule:
-            day_and_time = shift.split()
-            day = day_and_time[0]
-            time = day_and_time[1]
-            schedule[day][time].append(worker_name)
-    response = jsonify({"workers_data": workers_data, "schedule": schedule})
+            worker_schedule = workers_data[worker_name]["schedule"]
+            for shift in worker_schedule:
+                day_and_time = shift.split()
+                day = day_and_time[0]
+                time = day_and_time[1]
+                schedule[day][time].append(worker_name)
+        response = jsonify({"workers_data": workers_data, "schedule": schedule})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+    except Exception as e:
+        print(e)
+        response = jsonify("Bad request")
+        response.status = 400
+        return response
+
+@app.route("/", methods=["GET"])
+def get_response():
+    response = jsonify("hello world")
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
-
 
 if __name__ == "__main__":
     app.run("localhost", 3002)

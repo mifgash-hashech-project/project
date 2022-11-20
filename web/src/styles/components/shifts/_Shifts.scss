@@ -1,4 +1,21 @@
 .shifts__container{
   @extend %page;
+  align-items: center;
 
+}
+
+.table-class{
+  align-content: center;
+  tr{
+    max-width: 100vw;
+  }
+  td{
+    text-align: center;
+
+    flex-wrap: wrap;
+  }
+  input{
+    text-align: center;
+    width: 100%;
+  }
 }
