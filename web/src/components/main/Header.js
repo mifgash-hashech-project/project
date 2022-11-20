@@ -50,7 +50,7 @@ export default function Header() {
         try {
             await logout(userData.token, userData.isAdmin);
             userDataDispatch(logoutAction());
-            history.push('/movies');
+            history.push('/products');
         } catch (err) {
             console.log(err)
         }

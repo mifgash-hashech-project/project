@@ -25,3 +25,26 @@ services:
         SERVICE: schedule
     ports:
       - 3002:3002
+  auth:
+    build:
+      context: ..
+      dockerfile: docker/node.Dockerfile
+      args:
+        SERVICE: auth
+    environment:
+      PORT: 3003
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+      MONGODB_COLLECTION: users
+      MONGO_INITDB_ROOT_USERNAME: master
+      MONGO_INITDB_ROOT_PASSWORD: password
+      JWT_SECRET: "ThisIsMySecret123!"
+    ports:
+      - 3003:3003
+  mongo:
+    image: mongo:4
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: master
+      MONGO_INITDB_ROOT_PASSWORD: password
