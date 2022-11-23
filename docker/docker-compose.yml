@@ -1,6 +1,27 @@
 version: '3.7'
 
 services:
+  traefik:
+    image: "traefik:v2.1"
+    container_name: "traefik"
+    command:
+#      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=maor.levy2@mail.huji.ac.il"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
   web:
     build:
       context: ..
@@ -8,7 +29,7 @@ services:
       args:
         SERVICE: web
     ports:
-      - 3000:3000
+      - ${WEB_PORT}:${WEB_PORT}
   employees:
     build:
       context: ..
@@ -16,7 +37,13 @@ services:
       args:
         SERVICE: employees
     ports:
-      - 3001:3001
+      - ${EMPLOYEES_PORT}:${EMPLOYEES_PORT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.employees-stripprefix.stripprefix.prefixes=/api/employees"
+      - "traefik.http.routers.employees.middlewares=employees-stripprefix"
+      - "traefik.http.routers.employees.rule=Host(`${APP_HOST}`) && PathPrefix(`/api/employees`)"
+      - "traefik.http.services.employees.loadbalancer.server.port=${EMPLOYEES_PORT}"
   schedule:
     build:
       context: ..
@@ -24,7 +51,13 @@ services:
       args:
         SERVICE: schedule
     ports:
-      - 3002:3002
+      - ${SCHEDULE_PORT}:${SCHEDULE_PORT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.schedule-stripprefix.stripprefix.prefixes=/api/schedule"
+      - "traefik.http.routers.schedule.middlewares=schedule-stripprefix"
+      - "traefik.http.routers.schedule.rule=Host(`${APP_HOST}`) && PathPrefix(`/api/schedule`)"
+      - "traefik.http.services.schedule.loadbalancer.server.port=${SCHEDULE_PORT}"
   auth:
     build:
       context: ..
@@ -32,19 +65,25 @@ services:
       args:
         SERVICE: auth
     environment:
-      PORT: 3003
+      PORT: ${AUTH_PORT}
       MONGODB_HOST: mongo
-      MONGODB_PORT: 27017
+      MONGODB_PORT: ${MONGODB_PORT}
       MONGODB_COLLECTION: users
       MONGO_INITDB_ROOT_USERNAME: master
       MONGO_INITDB_ROOT_PASSWORD: password
       JWT_SECRET: "ThisIsMySecret123!"
     ports:
-      - 3003:3003
+      - ${AUTH_PORT}:${AUTH_PORT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.auth-stripprefix.stripprefix.prefixes=/api/auth"
+      - "traefik.http.routers.auth.middlewares=auth-stripprefix"
+      - "traefik.http.routers.auth.rule=Host(`${APP_HOST}`) && PathPrefix(`/api/auth`)"
+      - "traefik.http.services.auth.loadbalancer.server.port=${AUTH_PORT}"
   mongo:
     image: mongo:4
     ports:
-      - 27017:27017
+      - ${MONGODB_PORT}:${MONGODB_PORT}
     environment:
       MONGO_INITDB_ROOT_USERNAME: master
       MONGO_INITDB_ROOT_PASSWORD: password
