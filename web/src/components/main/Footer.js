@@ -1,14 +1,18 @@
 import React from 'react';
 import FooterIcon from './FooterIcon';
+import {headerRoutes} from "./Header";
+import Product from "../products/Product";
+import {nanoid} from "nanoid";
 
 export default function Footer() {
+    const footerPaths = Object.keys(headerRoutes)
     return (
         <div className="footer__container">
             <div className="footer">
-                <FooterIcon name={"Movies"} />
-                <FooterIcon name={"Theaters"} />
-                <FooterIcon name={"News"} />
-                <FooterIcon name={"Account"} />
+                {footerPaths.length >0  && footerPaths.map((e, i) => (
+                    <FooterIcon path={e} name={headerRoutes[e]} key={nanoid()}/>
+                ))}
+
             </div>
 
         </div>

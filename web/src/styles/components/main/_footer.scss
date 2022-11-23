@@ -6,17 +6,18 @@
   height: 4rem;
 }
 .footer{
-  padding: 0.25rem;
+  padding: 0.025rem;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   background: $myWhite;
-  z-index: 100;  
+  z-index: 100;
+  overflow-x: scroll;
 }
 
 .icon__container{
-  
+  display: flex;
 }
 
 
@@ -34,12 +35,12 @@
   .nav{
     color: unset;
     display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  align-items: center;
-  text-align: center;
-  padding: 0.25rem;
-    *{font-size: smaller;}
+    flex-direction: column;
+    cursor: pointer;
+    align-items: center;
+    text-align: center;
+    padding: 0.0125rem;
+    *{font-size: smaller; text-wrap: normal}
     .icon__active{
     display: none;
   }
@@ -54,6 +55,10 @@
   .icon__active{
     display: block;
   }
+}
+
+.icon__text {
+  max-width: 100%;
 }
 
 

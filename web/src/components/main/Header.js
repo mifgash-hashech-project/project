@@ -9,7 +9,16 @@ import LoaderContainer from './LoaderContainer';
 import { setDataAction } from '../../actions/DataActions';
 import Link from "./Link";
 import {nanoid} from "nanoid";
-
+export const headerRoutes = {
+    "roles": "תפקידים",
+    "contact": "צור קשר",
+    "want-ads": "דרושים",
+    "shifts": "משמרות",
+    "branches": "סניפים",
+    "deliveries": "משלוחים",
+    "products": "מוצרים",
+    "about": "אודות",
+}
 export default function Header() {
     const { userData, userDataDispatch } = useContext(UserContext);
     const { contentDataDispatch } = useContext(DataContext);
@@ -31,16 +40,7 @@ export default function Header() {
         }
     }, [userDataDispatch, contentDataDispatch, componentOn]);
 
-    const headerRoutes = {
-        "roles": "תפקידים",
-        "contact": "צור קשר",
-        "want-ads": "דרושים",
-        "shifts": "משמרות",
-        "branches": "סניפים",
-        "deliveries": "משלוחים",
-        "products": "מוצרים",
-        "about": "אודות",
-    }
+
 
     const onClickLogo = () => {
         history.push('/products');
