@@ -1,7 +1,10 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import {addEmployees,modifyEmployee, getEmployeeById} from "../../server/employees";
+import {ModalContext} from "../../contexts/ModalContext";
+import {clearModalAction, goForwardAction} from "../../actions/ModalActions";
 
 export default function UpdateEmployee({setShowFormFunc}) {
+    const { modalDataDispatch } = useContext(ModalContext);
     const [email, setEmail] = useState("");
     const [isEmailInputValid, setIsEmailInputValid] = useState(false);
     const [id, setId] = useState("");
@@ -19,7 +22,13 @@ export default function UpdateEmployee({setShowFormFunc}) {
             const existingEmployee = await getEmployeeById(id);
             if (!!existingEmployee) await modifyEmployee(employee);
             else await addEmployees(employee);
-            return setShowFormFunc(false)
+            modalDataDispatch(clearModalAction());
+            modalDataDispatch(goForwardAction({
+                elementName: "ApprovalMessage",
+                props: { message: "User data registered!" }
+            }));
+            setShowFormFunc(false)
+
         }
     }
     const areInputsValid = ()=>{

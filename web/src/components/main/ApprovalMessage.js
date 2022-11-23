@@ -7,7 +7,7 @@ export default function ApprovalMessage({ message }) {
 
     setTimeout(() => {
         modalDataDispatch(clearModalAction());
-    }, 1500)
+    }, 2000)
     return (
         <div className="approval-message">
             <h1>{message}</h1>

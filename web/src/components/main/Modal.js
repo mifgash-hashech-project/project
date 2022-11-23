@@ -11,13 +11,15 @@ import AddAccount from '../account/admin/account/AddAccount';
 import DeleteAccount from '../account/admin/account/DeleteAccount';
 import AdjustItems from '../account/admin/AdjustItems';
 import ApprovalMessage from './ApprovalMessage';
+import UpdateEmployee from "../roles/UpdateEmployee";
 export default function Modal() {
     const { modalData, modalDataDispatch } = useContext(ModalContext);
     const components = {
         Default, LoginPage, ApprovalMessage,
         Menu,
         ConfirmDelete, UpdateItem, AdjustItems,
-        ChangePassword, AddAccount, DeleteAccount
+        ChangePassword, AddAccount, DeleteAccount,
+        UpdateEmployee
     };
     const [children, setChildren] = useState({ elementName: 'Default', props: {} });
     useEffect(() => {

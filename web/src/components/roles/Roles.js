@@ -1,10 +1,14 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import {getEmployees} from "../../server/employees";
 import Employees from "./Employees";
 import Profiles from "./Profiles";
 import UpdateEmployee from "./UpdateEmployee";
+import {ModalContext} from "../../contexts/ModalContext";
+import {goForwardAction} from "../../actions/ModalActions";
+import Modal from "../main/Modal";
 
 export default function Roles() {
+    const { modalData, modalDataDispatch } = useContext(ModalContext);
     const [showEmployees, setShowEmployees] = useState(false);
     const [showEmployeesText, setShowEmployeesText] = useState("Show emloyees");
     const [updateEmployee, setUpdateEmployee] = useState(false);
@@ -21,6 +25,14 @@ export default function Roles() {
        setUpdateEmployee(!updateEmployee);
        setShowEmployees(false);
        setShowEmployeesText("Show emloyees")
+        const children = {
+            elementName: 'UpdateEmployee',
+            props: {
+                setShowFormFunc: setUpdateEmployee,
+
+            }
+        }
+        modalDataDispatch(goForwardAction(children));
     }
 
     return (
@@ -29,9 +41,9 @@ export default function Roles() {
                 <button  onClick={onClickShowEmployees}>{showEmployeesText}</button>
                 <button  onClick={onClickUpdateEmployees}>Add/Update employee</button>
             </div>
-            {!showEmployees && updateEmployee && <UpdateEmployee setShowFormFunc={setUpdateEmployee}/>}
             {showEmployees && <Employees employeesList={employeesData}/>}
             <Profiles/>
+            {modalData.isModal && <Modal />}
         </div>
 
     )

@@ -20,6 +20,7 @@
   flex-wrap: wrap;
   overflow-x: auto;
   overflow-y: hidden;
+  min-height: 100%;
 }
 
 .employee{
@@ -56,22 +57,41 @@
   height:300px;
 }
 
-.form__container{
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  form {
+
+@media only screen and (max-width: 820px) {
+  .roles__container{
+  }
+  .employees__container{
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: unset;
+    overflow-y: unset;
+    min-height: 100%;
+  }
+  .employee{
+    margin: 0.5rem;
+    padding: 2rem;
     border: 0.125rem solid $myDarkBlue;
     border-radius: 0.5rem;
-    margin: 5px;
-    padding: 5px;
+    width: 100%;
+    max-width: 95vw;
+  }
+  .Profiles {
+    width: 100vw;
+    padding: 0.5rem;
 
   }
-  form input {
-    padding: 2.5px;
-    border-radius: 0.5rem;
+  .Profile {
     width: 100%;
+    padding: 0.5rem;
+
   }
+
+  .Profile img {
+    width: 85vw;
+    height:300px;
+  }
+
 }
