@@ -10,12 +10,12 @@ import { setDataAction } from '../../actions/DataActions';
 import Link from "./Link";
 import {nanoid} from "nanoid";
 export const headerRoutes = {
-    "roles": "תפקידים",
+    "deliveries": "משלוחים",
     "contact": "צור קשר",
     "want-ads": "דרושים",
+    "roles": "תפקידים",
     "shifts": "משמרות",
     "branches": "סניפים",
-    "deliveries": "משלוחים",
     "products": "מוצרים",
     "about": "אודות",
 }
