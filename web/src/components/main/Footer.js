@@ -1,7 +1,6 @@
 import React from 'react';
 import FooterIcon from './FooterIcon';
 import {headerRoutes} from "./Header";
-import Product from "../products/Product";
 import {nanoid} from "nanoid";
 
 export default function Footer() {

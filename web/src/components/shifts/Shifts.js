@@ -32,15 +32,6 @@ const DATA = [
     ['גדעון', 63, 8, 20, 15, 24, 8, 20, 12, 19, 8, 20, 5, 15, 15, 24],
 
 ]
-const hebrewDaysMapping = {
-    "Sun": "ראשון",
-    "Mon": "שני",
-    "Tue": "שלישי",
-    "Wed": "רביעי",
-    "Thu": "חמישי",
-    "Fri": "שישי",
-    "Sat": "שבת"
-}
 
 export default function Shifts() {
 

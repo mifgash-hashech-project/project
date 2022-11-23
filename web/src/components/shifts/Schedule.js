@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import ScheduleHeader from "./ScheduleHeader";
 import {nanoid} from "nanoid";
 import ScheduleRow from "./ScheduleRow";
@@ -39,7 +39,7 @@ export default function Schedule({data}) {
 
             }
             console.log(shifts[i], shifts[smallest])
-            if (smallest != i ){
+            if (smallest !== i ){
                 const temp = shifts[i]
                 shifts[i] = shifts[smallest]
                 shifts[smallest] = temp

@@ -2,7 +2,6 @@ import React, {useContext, useState} from 'react'
 import {getEmployees} from "../../server/employees";
 import Employees from "./Employees";
 import Profiles from "./Profiles";
-import UpdateEmployee from "./UpdateEmployee";
 import {ModalContext} from "../../contexts/ModalContext";
 import {goForwardAction} from "../../actions/ModalActions";
 import Modal from "../main/Modal";
