@@ -44,12 +44,32 @@ services:
       - "traefik.http.routers.employees.middlewares=employees-stripprefix"
       - "traefik.http.routers.employees.rule=Host(`${APP_HOST}`) && PathPrefix(`/api/employees`)"
       - "traefik.http.services.employees.loadbalancer.server.port=${EMPLOYEES_PORT}"
+  shifts:
+    build:
+      context: ..
+      dockerfile: docker/node.Dockerfile
+      args:
+        SERVICE: shifts
+    environment:
+      - SCHEDULE_HOST=${SCHEDULE_HOST}
+      - SCHEDULE_PORT=${SCHEDULE_PORT}
+    ports:
+      - ${SHIFTS_PORT}:${SHIFTS_PORT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.shifts-stripprefix.stripprefix.prefixes=/api/shifts"
+      - "traefik.http.routers.shifts.middlewares=shifts-stripprefix"
+      - "traefik.http.routers.shifts.rule=Host(`${APP_HOST}`) && PathPrefix(`/api/shifts`)"
+      - "traefik.http.services.shifts.loadbalancer.server.port=${SHIFTS_PORT}"
   schedule:
     build:
       context: ..
       dockerfile: docker/python.Dockerfile
       args:
         SERVICE: schedule
+    environment:
+      - HOST=${SCHEDULE_HOST}
+      - PORT=${SCHEDULE_PORT}
     ports:
       - ${SCHEDULE_PORT}:${SCHEDULE_PORT}
     labels:

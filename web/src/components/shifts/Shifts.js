@@ -1,8 +1,10 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import WorkerData from "./WorkerData";
 import LoaderContainer from "../main/LoaderContainer";
 import {getWorkerSchedule} from "../../server/schedule";
 import Schedule from "./Schedule";
+import {goForwardAction} from "../../actions/ModalActions";
+import {ModalContext} from "../../contexts/ModalContext";
 
 const DATA = [
     ['אבי', 16, 0, 12, 0, 12, 0, 12, 0, 12, 0, 12, 0, 12, 0, 12],
@@ -39,13 +41,22 @@ export default function Shifts() {
     const [showData, setShowData] = useState(true);
     const [scheduleData, setScheduleData] = useState(DATA);
     const [finalScheduleData, setFinalScheduleData] = useState({"Sun": []});
-
+    const { modalDataDispatch } = useContext(ModalContext);
     const onClickGetSchedule = async ()=>{
         setShowLoader(true)
-        const {schedule} = await getWorkerSchedule(scheduleData)
+        const result = await getWorkerSchedule(scheduleData)
         setShowLoader(false)
-        setShowData(false)
-        setFinalScheduleData(schedule)
+
+        if (!!result){
+            setFinalScheduleData(result.schedule)
+            setShowData(false)
+        } else {
+            modalDataDispatch(goForwardAction({
+                elementName: "ApprovalMessage",
+                props: { message: "Failed to get Shifts data from schedule" }
+            }));
+        }
+
 
     }
     const onClickEditShifts = async ()=>{

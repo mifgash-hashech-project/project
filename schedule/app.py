@@ -5,7 +5,7 @@ from flask_cors import CORS
 from operator import itemgetter
 import pandas
 import pulp
-
+import os
 from example_inputs import (
     periods,
 )
@@ -14,8 +14,8 @@ AM_PERIODS = 42
 AM_QUARTERS = 28
 app = Flask(__name__)
 CORS(app)
-
-
+HOST = os.environ.get("HOST")
+PORT = os.environ.get("PORT")
 def model_problem(raw_worker_data):
     workers_data = {}
     for row in raw_worker_data:
@@ -203,4 +203,4 @@ def get_response():
     return response
 
 if __name__ == "__main__":
-    app.run("localhost", 3002)
+    app.run(host=HOST,port=PORT, debug=True)
