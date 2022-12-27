@@ -10,6 +10,7 @@ const cacheRouter = require('./routers/shiftsRouter');
 
 app.use(cacheRouter);
 
+
 app.listen(port, () => {
     console.log(`Server is up on port ${port}!`);
 });
