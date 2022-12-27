@@ -3,19 +3,20 @@ import json
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from operator import itemgetter
-import pandas
 import pulp
 import os
 from example_inputs import (
-    periods,
+    periods, quarters
 )
 
-AM_PERIODS = 42
-AM_QUARTERS = 28
+AM_PERIODS = 21
+AM_QUARTERS = 14
 app = Flask(__name__)
 CORS(app)
 HOST = os.environ.get("HOST")
 PORT = os.environ.get("PORT")
+
+
 def model_problem(raw_worker_data):
     workers_data = {}
     for row in raw_worker_data:
@@ -24,14 +25,12 @@ def model_problem(raw_worker_data):
         workers_data[name]["skill_level"] = row[1]
         workers_data[name]["period_avail"] = []
         for day in range(7):
-            for period in range(6):
+            for period in range(3):
                 workers_data[name]["period_avail"].append(
-                    int((period * 4 >= row[2 + day * 2]) and (
-                            (period + 1) * 4 <= row[
+                    int((period * 8 >= row[2 + day * 2]) and (
+                            (period + 1) * 8 <= row[
                         2 + day * 2 + 1]))
                 )
-
-    quarters = pandas.read_excel("./schedule/quarter.xlsx", header=0).loc[0].tolist()
 
     problem = pulp.LpProblem("ScheduleWorkers", pulp.LpMinimize)
 
@@ -65,7 +64,6 @@ def model_problem(raw_worker_data):
             periodid += 1
 
         workerid += 1
-
     # Create objective function (amount of turns worked)
     objective_function = None
     for worker in workers_data.keys():
@@ -73,7 +71,6 @@ def model_problem(raw_worker_data):
             workers_data[worker]["worked_periods"])
 
     problem += objective_function
-
     # Every quarter minimum workers constraint
     for quarter in range(AM_QUARTERS):
         workquartsum = None
@@ -94,52 +91,45 @@ def model_problem(raw_worker_data):
                                   "skill_level"]
 
         problem += skillperiodsum >= 26
-
-    # Each worker must have one 12-hour break per day
     for day in range(7):
         for worker in workers_data.keys():
             problem += sum(workers_data[worker]["rest_periods"][
-                           day * 6:(day + 1) * 6]) >= 1
-
-    # If a worker takes a 12-hour break, can't work in the immediate 3 periods
+                           day * 3:(day + 1) * 3]) >= 0
+    # If a worker takes a 8-hour break, can't work in the immediate 2 periods
 
     for period in range(AM_PERIODS):
         for worker in workers_data.keys():
-            access_list = [period, (period + 1) % 42, (period + 2) % 42]
+            access_list = [period, (period + 1) % AM_PERIODS, (period + 2) % AM_PERIODS]
             problem += sum(list(itemgetter(*access_list)(
-                workers_data[worker]["worked_periods"]))) <= 3 * (1 -
+                workers_data[worker]["worked_periods"]))) <= 2 * (1 -
                                                                   workers_data[
                                                                       worker][
                                                                       "rest_periods"][
                                                                       period])
-
-    # A worker can't work more than 12 hours every 24 hours
+    # A worker can't work more than 16 hours every 24 hours
     for period in range(AM_PERIODS):
         for worker in workers_data.keys():
-            access_list = [period, (period + 1) % 42, (period + 2) % 42,
-                           (period + 3) % 42, (period + 4) % 42,
-                           (period + 5) % 42]
+            access_list = [period, (period + 1) % AM_PERIODS, (period + 2) % AM_PERIODS,
+                           (period + 3) % AM_PERIODS, (period + 4) % AM_PERIODS,
+                           (period + 5) % AM_PERIODS]
             problem += sum(list(itemgetter(*access_list)(
-                workers_data[worker]["worked_periods"]))) <= 3
+                workers_data[worker]["worked_periods"]))) <= 2
 
     # Each worker must have one 48-hour break per week
-
     for worker in workers_data.keys():
         problem += sum(workers_data[worker]["weekend_periods"]) == 1
 
-    # If a worker takes a 48-hour break, can't work in the inmediate 12 periods
-
+    # If a worker takes a 48-hour break, can't work in the inmediate 3 periods
     for period in range(AM_PERIODS):
         for worker in workers_data.keys():
-            for miniperiod in range(12):
+            for miniperiod in range(3):
                 problem += workers_data[worker]["worked_periods"][
                                (period + miniperiod) % AM_PERIODS] <= (
                                    1 - workers_data[worker][
                                "weekend_periods"][period])
         problem += workers_data[worker]["worked_periods"][
-                       (period + 12) % AM_PERIODS] >= \
+                       (period + 3) % AM_PERIODS] >= \
                    workers_data[worker]["weekend_periods"][period]
-
     try:
         problem.solve()
     except Exception as e:
@@ -159,7 +149,7 @@ def model_problem(raw_worker_data):
 
 def init_schedule():
     days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-    day_periods = [f"{hour * 4}-{hour * 4 + 4}" for hour in range(6)]
+    day_periods = [f"{hour * 8}-{hour * 8 + 8}" for hour in range(3)]
     schedule = {}
     for day in days:
         schedule[day] = {period: [] for period in day_periods}
@@ -171,7 +161,6 @@ def model():
     try:
         request_data = request.data
         raw_worker_data = json.loads(request_data)['data']
-        print(raw_worker_data)
         problem, workers_data = model_problem(raw_worker_data)
         schedule = init_schedule()
         for worker_name in workers_data.keys():
@@ -187,7 +176,8 @@ def model():
                 day = day_and_time[0]
                 time = day_and_time[1]
                 schedule[day][time].append(worker_name)
-        response = jsonify({"workers_data": workers_data, "schedule": schedule})
+        response = jsonify(
+            {"workers_data": workers_data, "schedule": schedule})
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
     except Exception as e:
@@ -202,5 +192,6 @@ def get_response():
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
+
 if __name__ == "__main__":
-    app.run(host=HOST,port=PORT, debug=True)
+    app.run(host=HOST, port=PORT, debug=True)
