@@ -53,6 +53,11 @@ services:
     environment:
       - SCHEDULE_HOST=${SCHEDULE_HOST}
       - SCHEDULE_PORT=${SCHEDULE_PORT}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=${POSTGRES_PORT}
     ports:
       - ${SHIFTS_PORT}:${SHIFTS_PORT}
     labels:
@@ -107,3 +112,13 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: master
       MONGO_INITDB_ROOT_PASSWORD: password
+  postgres:
+    image: postgres:12
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
