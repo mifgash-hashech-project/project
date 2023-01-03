@@ -11,7 +11,7 @@ async function saveScheduleInTable(client, schedule) {
 async function createTable(client) {
     // Create the shifts table
     try {
-        const res = await client.query(`
+      await client.query(`
       CREATE TABLE IF NOT EXISTS shifts (
         id text PRIMARY KEY,
         shift_id text,
@@ -21,7 +21,17 @@ async function createTable(client) {
         time time
       )
     `);
-        console.log(res.rows[0]);
+      await client.query(`
+      CREATE TABLE IF NOT EXISTS shifts_person (
+        id text PRIMARY KEY,
+        shift_id text,
+        employee text,
+        schedule_id text,
+        date date,
+        time time
+      )
+    `);
+        console.log("tables created");
     } catch (err) {
         console.log(err.stack);
         throw err
@@ -33,21 +43,31 @@ function saveEntries(client, entriesList) {
     for (let i = 0; i < entriesList.length; i++) {
         let entry = entriesList[i];
 
-        // Construct the INSERT query
-        let query = `INSERT INTO shifts (id, shift_id, num_of_employees, schedule_id, date, time) VALUES ($1, $2, $3, $4, $5, $6)`;
-        let values = [entry.id, entry.shift_id, entry.num_of_employees, entry.schedule_id, entry.date, entry.time];
+        // Construct the INSERT query for shifts
+        let shiftsQuery = `INSERT INTO shifts (id, shift_id, num_of_employees, schedule_id, date, time) VALUES ($1, $2, $3, $4, $5, $6)`;
+        let shiftsValues = [entry.id, entry.shift_id, entry.num_of_employees, entry.schedule_id, entry.date, entry.time];
 
-        // Execute the query
-        client.query(query, values, (err, res) => {
-            if (err) {
-                console.log(err.stack);
-                throw err
-            } else {
-                console.log(res.rows[0]);
-            }
-        });
+        // Execute shifts query
+        saveQuery(shiftsQuery, shiftsValues, client)
+        let shifts_personQuery = `INSERT INTO shifts_person (id, shift_id, employee, schedule_id, date, time) VALUES ($1, $2, $3, $4, $5, $6)`;
+        for (const employee of entry.employees){
+            let shifts_personValues = [randomUUID(), entry.shift_id, employee, entry.schedule_id, entry.date, entry.time];
+            saveQuery(shifts_personQuery, shifts_personValues, client)
+        }
+
     }
 
+}
+
+function saveQuery(query, values, client){
+    client.query(query, values, (err, res) => {
+        if (err) {
+            console.log(err.stack);
+            throw err
+        } else {
+            console.log(`row stored. ${values}`);
+        }
+    });
 }
 
 function getTableEntries(schedule, scheduleId, time, date) {
@@ -58,6 +78,7 @@ function getTableEntries(schedule, scheduleId, time, date) {
                 id: randomUUID(),
                 shift_id: `${day}_${shift.replace('-', '_')}`,
                 num_of_employees: schedule[day][shift].length,
+                employees: schedule[day][shift],
                 schedule_id: scheduleId,
                 date,
                 time
