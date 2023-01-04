@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { NavLink, useHistory } from 'react-router-dom';
+import {NavLink, useHistory, useLocation} from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import { DataContext } from '../../contexts/DataContext';
 import { logoutAction, setWindowAction } from '../../actions/UserActions';
@@ -9,6 +9,7 @@ import LoaderContainer from './LoaderContainer';
 import { setDataAction } from '../../actions/DataActions';
 import Link from "./Link";
 import {nanoid} from "nanoid";
+import {getRouteUsage, getTotalUsage, saveRouteUsage, saveTotalUsage} from "../../server/usage";
 export const headerRoutes = {
     "deliveries": "משלוחים",
     "contact": "צור קשר",
@@ -19,13 +20,55 @@ export const headerRoutes = {
     "products": "מוצרים",
     "about": "אודות",
 }
+const mainPage = 'products'
+function getRouteFromLocation(location){
+    const route = location.pathname.replace('/','')
+    return route.length > 0 ? route : mainPage
+}
 export default function Header() {
     const { userData, userDataDispatch } = useContext(UserContext);
-    const { contentDataDispatch } = useContext(DataContext);
+    const { contentData, contentDataDispatch } = useContext(DataContext);
     const [componentOn, setComponentOn] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const history = useHistory();
+    const currentRoute = getRouteFromLocation(useLocation());
+    const startTime = Date.now()
+    const onClickAccount = async ()=>{
+        if (!userData.loggedIn) {
+            const now = Date.now()
+            contentDataDispatch(setDataAction({
+                routeData: {route: 'accounts', timestamp: startTime},
+                userId: userData.userId
+            }))
+        }
+    }
+    useEffect(() => {
 
+        if (!userData.loggedIn) {
+            contentDataDispatch(setDataAction({
+                routeData: {route: currentRoute, timestamp: startTime},
+                appStartTime: startTime,
+                userId: userData.userId,
+
+            }))
+        }
+        }, []);
+    function useBeforeUnload(onBeforeUnload) {
+        useEffect(() => {
+            window.addEventListener('beforeunload', onBeforeUnload);
+            return () => window.removeEventListener('beforeunload', onBeforeUnload);
+        }, [onBeforeUnload]);
+    }
+
+    useBeforeUnload(async () => {
+        if (!userData.loggedIn) {
+            const now = Date.now()
+            const timeSpent = now - contentData.appStartTime;
+            await saveRouteUsage(getRouteUsage(contentData.routeData, now, userData.userId, userData.sessionId))
+            const appUsage = getTotalUsage(contentData.totalPages, contentData.appStartTime, now, timeSpent, userData.userId, userData.sessionId)
+            await saveTotalUsage(appUsage)
+        }
+    });
     useEffect(() => {
         setComponentOn(true);
         userDataDispatch(setWindowAction(window.innerWidth));
@@ -43,14 +86,14 @@ export default function Header() {
 
 
     const onClickLogo = () => {
-        history.push('/products');
+        history.push(`/${mainPage}`);
     };
 
     const onClickLogout = async () => {
         try {
             await logout(userData.token, userData.isAdmin);
             userDataDispatch(logoutAction());
-            history.push('/products');
+            history.push(`/${mainPage}`);
         } catch (err) {
             console.log(err)
         }
@@ -61,9 +104,9 @@ export default function Header() {
         const links = [];
         const linksArray = Object.keys(linksMap);
         for (const link of linksArray){
-            links.push(<Link name={link} alias={linksMap[link]} key={nanoid()}/>)
+            links.push(<Link name={link} alias={linksMap[link]} key={nanoid()} />)
         }
-        links.push(<NavLink key={nanoid()} className="account_logo" to="/account"><img src="./icons/header/‏‏account_icon__header.png" alt="account_logo" key={nanoid()}/>
+        links.push(<NavLink onClick={onClickAccount} key={nanoid()} className="account_logo" to="/account"><img src="./icons/header/‏‏account_icon__header.png" alt="account_logo" key={nanoid()}/>
         </NavLink>)
         return links
     };

@@ -1,9 +1,12 @@
+import {nanoid} from "nanoid";
 export const initialUserData = {
     loggedIn: false,
     isAdmin: false,
     activeUser: '',
     location: '',
     token: '',
+    userId: '123456',
+    sessionId: nanoid(),
     windowWidth: null,
 
 };
@@ -16,6 +19,7 @@ const UserReducer = (userData, action) => {
                 loggedIn: true,
                 activeUser: action.user.user.name,
                 token: action.user.token,
+                userId: action.user.id,
                 isAdmin: action.isAdmin
             };
         case "WINDOW":
@@ -29,6 +33,7 @@ const UserReducer = (userData, action) => {
                 loggedIn: false,
                 activeUser: '',
                 token: '',
+                userId: '',
                 isAdmin: false
             };
 
