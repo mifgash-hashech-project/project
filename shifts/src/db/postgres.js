@@ -9,8 +9,16 @@ const client = new Client({
     password: pgPassword,
     port: pgPort,
 });
-try{
+async function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function initConnection(){
+    await delay(10000)
     client.connect();
+}
+try{
+    initConnection()
 }catch (err){
     throw err
 }
