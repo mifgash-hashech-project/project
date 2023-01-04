@@ -1,0 +1,39 @@
+{
+  "account": {
+    "id": "064b5f12-a556-4938-b91e-19ce46d19b4f",
+    "hebrew": "חשבון"
+  },
+  "deliveries": {
+    "hebrew": "משלוחים",
+    "id": "f58f16af-6a98-4f1d-bc14-ccfc3ff626d4"
+  },
+  "contact": {
+    "hebrew": "צור קשר",
+    "id": "36ba04e3-78a7-4355-bfe0-747d0b02f5ae"
+  },
+  "want-ads": {
+    "hebrew": "דרושים",
+    "id": "919a688c-710f-45f0-8ddf-cf9081520772"
+  },
+  "roles": {
+    "hebrew": "תפקידים",
+    "id": "aaa9018e-32e0-46d5-b600-7ea969d06782"
+  },
+  "shifts": {
+    "hebrew": "משמרות",
+    "id": "8d11a5ef-c809-4f15-a752-91caa0ad4648"
+  },
+  "branches": {
+    "hebrew": "סניפים",
+    "id": "47510de5-ae89-40a6-b664-839e881be48e"
+  },
+  "products": {
+    "hebrew": "מוצרים",
+    "id": "5cc347cb-ec37-455e-9373-4c0ba7f7dc44"
+  },
+  "about": {
+    "hebrew": "אודות",
+    "id": "016c4c21-56e6-4a70-9654-4624c6428bf8"
+  }
+}
+
