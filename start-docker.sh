@@ -8,6 +8,7 @@ export SCHEDULE_PORT=3002
 export SCHEDULE_HOST=schedule
 export AUTH_PORT=3003
 export SHIFTS_PORT=3006
+export USAGE_PORT=3007
 export MONGODB_PORT=27017
 export POSTGRES_HOST=postgres
 export POSTGRES_USER=master

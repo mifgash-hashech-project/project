@@ -66,6 +66,30 @@ services:
       - "traefik.http.routers.shifts.middlewares=shifts-stripprefix"
       - "traefik.http.routers.shifts.rule=Host(`${APP_HOST}`) && PathPrefix(`/api/shifts`)"
       - "traefik.http.services.shifts.loadbalancer.server.port=${SHIFTS_PORT}"
+  usage:
+    build:
+      context: ..
+      dockerfile: docker/node.Dockerfile
+      args:
+        SERVICE: usage
+    environment:
+      - PORT=${USAGE_PORT}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+    ports:
+      - ${USAGE_PORT}:${USAGE_PORT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.usage-stripprefix.stripprefix.prefixes=/api/usage"
+      - "traefik.http.routers.usage.middlewares=shifts-stripprefix"
+      - "traefik.http.routers.usage.rule=Host(`${APP_HOST}`) && PathPrefix(`/api/usage`)"
+      - "traefik.http.services.usage.loadbalancer.server.port=${USAGE_PORT}"
+    restart: always
+    depends_on:
+      - postgres
   schedule:
     build:
       context: ..
