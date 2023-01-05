@@ -3,8 +3,7 @@ export const serverURL = `http://localhost`;
 const authServerPort = 3003
 
 const getRole = (isAdmin) => {
-    const role = isAdmin ? "admin" : "user";
-    return role
+    return isAdmin ? "admin" : "user";
 }
 
 export const loginUser = async (request) => {

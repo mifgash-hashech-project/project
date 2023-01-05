@@ -4,7 +4,7 @@ import { UserContext } from '../../contexts/UserContext';
 import { DataContext } from '../../contexts/DataContext';
 import { logoutAction, setWindowAction } from '../../actions/UserActions';
 import { logout } from '../../server/login';
-import { getAllData } from '../../server/utils';
+import {getAllData, getRouteFromLocation, mainPage} from '../../server/utils';
 import LoaderContainer from './LoaderContainer';
 import { setDataAction } from '../../actions/DataActions';
 import Link from "./Link";
@@ -20,11 +20,7 @@ export const headerRoutes = {
     "products": "מוצרים",
     "about": "אודות",
 }
-const mainPage = 'products'
-function getRouteFromLocation(location){
-    const route = location.pathname.replace('/','')
-    return route.length > 0 ? route : mainPage
-}
+
 export default function Header() {
     const { userData, userDataDispatch } = useContext(UserContext);
     const { contentData, contentDataDispatch } = useContext(DataContext);
@@ -34,22 +30,22 @@ export default function Header() {
     const currentRoute = getRouteFromLocation(useLocation());
     const startTime = Date.now()
     const onClickAccount = async ()=>{
-        if (!userData.loggedIn) {
+        if (userData.loggedIn) {
             const now = Date.now()
             contentDataDispatch(setDataAction({
-                routeData: {route: 'accounts', timestamp: startTime},
+                routeData: {route: 'accounts', timestamp: now},
                 userId: userData.userId
             }))
         }
     }
     useEffect(() => {
 
-        if (!userData.loggedIn) {
+        if (userData.loggedIn) {
             contentDataDispatch(setDataAction({
                 routeData: {route: currentRoute, timestamp: startTime},
                 appStartTime: startTime,
                 userId: userData.userId,
-
+                totalPages: 1
             }))
         }
         }, []);
@@ -59,16 +55,17 @@ export default function Header() {
             return () => window.removeEventListener('beforeunload', onBeforeUnload);
         }, [onBeforeUnload]);
     }
-
-    useBeforeUnload(async () => {
-        if (!userData.loggedIn) {
+    async function summarizeAppUsage(){
+        if (userData.loggedIn) {
             const now = Date.now()
             const timeSpent = now - contentData.appStartTime;
             await saveRouteUsage(getRouteUsage(contentData.routeData, now, userData.userId, userData.sessionId))
-            const appUsage = getTotalUsage(contentData.totalPages, contentData.appStartTime, now, timeSpent, userData.userId, userData.sessionId)
+            const appUsage = getTotalUsage(contentData.totalPages -1, contentData.appStartTime, now, timeSpent, userData.userId, userData.sessionId)
             await saveTotalUsage(appUsage)
         }
-    });
+    }
+
+    useBeforeUnload(summarizeAppUsage);
     useEffect(() => {
         setComponentOn(true);
         userDataDispatch(setWindowAction(window.innerWidth));
@@ -92,6 +89,7 @@ export default function Header() {
     const onClickLogout = async () => {
         try {
             await logout(userData.token, userData.isAdmin);
+            await summarizeAppUsage()
             userDataDispatch(logoutAction());
             history.push(`/${mainPage}`);
         } catch (err) {

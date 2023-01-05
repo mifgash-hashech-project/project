@@ -49,3 +49,10 @@ export const getAllData = async () => {
     }
 
 };
+
+export const mainPage = 'products'
+
+export function getRouteFromLocation(location){
+    const route = location.pathname.replace('/','')
+    return route.length > 0 ? route : mainPage
+}

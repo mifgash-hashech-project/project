@@ -5,13 +5,16 @@ const Admin = require('../db/models/adminModel');
 const mySecret = process.env.JWT_SECRET || "ThisIsMySecret123!"
 const auth = async (req, res, next) => {
     try {
-        const type = req.header('UserType');
-        const token = req.header('Authorization').replace('Bearer ', '');
+        const {token, isAdmin} = req.body;
+        console.log(isAdmin)
         const decoded = jwt.verify(token, mySecret);
-        const user = type === "User" ? await User.findOne({
+        console.log("token")
+        console.log(token)
+        console.log(decoded)
+        const user = isAdmin ? await Admin.findOne({_id: decoded._id, 'tokens.token': token}) : await User.findOne({
             _id: decoded._id,
             'tokens.token': token
-        }) : await Admin.findOne({_id: decoded._id, 'tokens.token': token});
+        });
         if (!user) throw new Error()
 
 
@@ -19,6 +22,7 @@ const auth = async (req, res, next) => {
         req.user = user;
         next()
     } catch (err) {
+        console.log(err)
         return res.status(401).send({message: 'Please authenticate.'});
     }
 }

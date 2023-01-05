@@ -10,7 +10,7 @@ export default function Link({name, alias}) {
     const { userData } = useContext(UserContext);
 
     const onClickLink = async ()=>{
-        if (!userData.loggedIn){
+        if (userData.loggedIn){
             const now = Date.now();
             await saveRouteUsage(getRouteUsage(contentData.routeData, now, userData.userId, userData.sessionId))
             contentDataDispatch(setDataAction({routeData:{route: name, timestamp: now}}))

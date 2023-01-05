@@ -7,7 +7,8 @@ import {DataContext} from '../../contexts/DataContext';
 import {ModalContext} from '../../contexts/ModalContext';
 import {UserContext} from '../../contexts/UserContext';
 import {subscribe} from '../../server/login';
-import {getAdminsData} from '../../server/utils';
+import {getAdminsData, getRouteFromLocation} from '../../server/utils';
+import {useLocation} from "react-router-dom";
 
 const SubscribeForm = (props) => {
     const {userData, userDataDispatch} = useContext(UserContext);
@@ -23,6 +24,21 @@ const SubscribeForm = (props) => {
     const [role, setRole] = useState(rolePlaceHolderValue);
     const [phone, setPhone] = useState("");
 
+    const currentRoute = getRouteFromLocation(useLocation());
+    const setUsageOnLogin = ()=>{
+        const startTime = Date.now()
+        contentDataDispatch(setDataAction({
+            routeData: {route: currentRoute, timestamp: startTime},
+            appStartTime: startTime,
+            userId: userData.userId,
+            totalPages: 1
+        }))
+        contentDataDispatch(setDataAction({
+            routeData: {route: currentRoute, timestamp: startTime},
+            appStartTime: startTime,
+            userId: userData.userId,
+        }))
+    }
 
     const isFormInvalid = () => {
         return validInputs.includes(false);
@@ -163,6 +179,7 @@ const SubscribeForm = (props) => {
                 const admins = await getAdminsData(userData.token)
                 contentDataDispatch(setDataAction(admins));
             }
+
             modalDataDispatch(clearModalAction());
             modalDataDispatch(goForwardAction({
                 elementName: "ApprovalMessage",

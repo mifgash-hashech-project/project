@@ -5,7 +5,7 @@ export const initialUserData = {
     activeUser: '',
     location: '',
     token: '',
-    userId: '123456',
+    userId: '',
     sessionId: nanoid(),
     windowWidth: null,
 
@@ -14,12 +14,14 @@ export const initialUserData = {
 const UserReducer = (userData, action) => {
     switch (action.type) {
         case "LOGIN":
+            const {user} = action.user
+            console.log(user.id)
             return {
                 ...userData,
                 loggedIn: true,
-                activeUser: action.user.user.name,
+                activeUser: user.name,
                 token: action.user.token,
-                userId: action.user.id,
+                userId: user.id,
                 isAdmin: action.isAdmin
             };
         case "WINDOW":

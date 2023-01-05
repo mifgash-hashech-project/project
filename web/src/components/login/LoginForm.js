@@ -6,7 +6,8 @@ import { DataContext } from '../../contexts/DataContext';
 import { ModalContext } from '../../contexts/ModalContext';
 import { UserContext } from '../../contexts/UserContext';
 import { loginUser } from '../../server/login';
-import { getAdminsData } from '../../server/utils';
+import {getAdminsData, getRouteFromLocation} from '../../server/utils';
+import {useLocation} from "react-router-dom";
 
 
 const LoginForm = (props) => {
@@ -20,6 +21,7 @@ const LoginForm = (props) => {
     const [isEmailInputValid, setIsEmailInputValid] = useState(true);
     const [isPasswordInputValid, setIsPasswordInputValid] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
+    const currentRoute = getRouteFromLocation(useLocation());
     useEffect(() => {
         if (props.errorMessage !== "") {
             setErrorMessage(props.errorMessage)
@@ -55,6 +57,7 @@ const LoginForm = (props) => {
                 const admins = await getAdminsData(resUserData.token)
                 contentDataDispatch(setDataAction(admins));
             }
+            setUsageOnLogin(resUserData.user.userId)
             modalDataDispatch(clearModalAction());
         } catch (err) {
             setErrorMessage(err.message);
@@ -68,6 +71,20 @@ const LoginForm = (props) => {
     const onChangeAdminLogin = (event) => {
         setIsAdmin(event.target.checked);
     };
+    const setUsageOnLogin = (userId)=>{
+        const startTime = Date.now()
+        contentDataDispatch(setDataAction({
+            routeData: {route: currentRoute, timestamp: startTime},
+            appStartTime: startTime,
+            userId,
+            totalPages: 1
+        }))
+        contentDataDispatch(setDataAction({
+            routeData: {route: currentRoute, timestamp: startTime},
+            appStartTime: startTime,
+            userId,
+        }))
+    }
     return (
         <div className="login-form">
             <h3>Login</h3>

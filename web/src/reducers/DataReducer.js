@@ -20,12 +20,18 @@ const getData = (data) => {
     return result
 }
 
+function getTotalPages(newData, totalPages){
+    let newTotalPages = totalPages + 1
+    newTotalPages = !!newData.totalPages ? newData.totalPages : newTotalPages
+    return newTotalPages
+}
+
 const DataReducer = (data, action) => {
     switch (action.type) {
 
         case "SET_DATA":
             const newData = getData(action.data);
-            const totalPages = newData.updateCount ? data.totalPages + 1 : data.totalPages + 1
+            const totalPages = getTotalPages(newData, data.totalPages)
             return {
                 ...data,
                 ...newData,
