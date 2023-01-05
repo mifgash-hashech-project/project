@@ -169,16 +169,18 @@ const SubscribeForm = (props) => {
         );
     };
 
-    const onSubmitform = async (event) => {
+    const onSubmitForm = async (event) => {
         event.preventDefault();
         try {
-            const request = {email, password, name: username, isAdmin: !props.partOfLogin};
+            const request = {email, password, name: username, phone, role, isAdmin: !props.partOfLogin};
+            console.log(request)
             const subscribeData = await subscribe(request);
             if (props.partOfLogin) userDataDispatch(loginAction(subscribeData, false));
             else {
                 const admins = await getAdminsData(userData.token)
                 contentDataDispatch(setDataAction(admins));
             }
+            setUsageOnLogin()
 
             modalDataDispatch(clearModalAction());
             modalDataDispatch(goForwardAction({
@@ -201,7 +203,7 @@ const SubscribeForm = (props) => {
     return (
         <div className="login-form">
             <h3>Subscribe</h3>
-            <form onSubmit={onSubmitform}>
+            <form onSubmit={onSubmitForm}>
                 <input placeholder="Username" className={inputClasses[0]} onBlur={onBlurUsername}/>
                 {invalidMessages[0] !== "" && <div className="invalid-message">{invalidMessages[0]}</div>}
                 <input placeholder="Email" className={inputClasses[1]} onBlur={onBlurEmail}/>
@@ -212,10 +214,10 @@ const SubscribeForm = (props) => {
                        onBlur={onBlurPasswordRepeated}/>
                 {invalidMessages[3] !== "" && <div className="invalid-message">{invalidMessages[3]}</div>}
                 <select value={role} className={inputClasses[4]} onChange={onBlurRole}>
-                    <option value={rolePlaceHolderValue}/>
-                    <option value="Seller"/>
-                    <option value="Cook"/>
-                    <option value="Manager"/>
+                    <option value={rolePlaceHolderValue}>{rolePlaceHolderValue}</option>
+                    <option value="Seller" >Seller</option>
+                    <option value="Cook">Cook</option>
+                    <option value="Manager">Manager</option>
                 </select>
                 {invalidMessages[4] !== "" && <div className="invalid-message">{invalidMessages[4]}</div>}
                 <input placeholder="Enter a phone number" className={inputClasses[5]}
