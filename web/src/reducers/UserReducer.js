@@ -15,7 +15,6 @@ const UserReducer = (userData, action) => {
     switch (action.type) {
         case "LOGIN":
             const {user} = action.user
-            console.log(user.id)
             return {
                 ...userData,
                 loggedIn: true,
