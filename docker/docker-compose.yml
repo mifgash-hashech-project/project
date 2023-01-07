@@ -116,6 +116,8 @@ services:
         SERVICE: auth
     environment:
       PORT: ${AUTH_PORT}
+      EMPLOYEES_PORT: ${EMPLOYEES_PORT}
+      EMPLOYEES_HOST: ${EMPLOYEES_HOST}
       MONGODB_HOST: mongo
       MONGODB_PORT: ${MONGODB_PORT}
       MONGODB_COLLECTION: users

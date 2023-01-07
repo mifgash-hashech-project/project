@@ -4,13 +4,14 @@ const auth = require('../middleware/auth');
 const {subscribe} = require("../controllers/subscribe");
 const {login} = require("../controllers/login");
 const {logout} = require("../controllers/logout");
+const {addEmployee} = require("../controllers/employee");
 
 router.post('/user/subscribe', async (req, res) => {
 
     try {
         const {user, token} = await subscribe(req, "User");
         console.log(`${user} user subscribed.`)
-
+        await addEmployee({...req.body, id:user.id})
         return res.status(201).send({ user, token });
 
     } catch (err) {

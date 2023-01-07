@@ -41,6 +41,19 @@ router.post('/add-employees', async (req, res) => {
     }
 });
 
+router.post('/add-employee', async (req, res) => {
+    try {
+
+        // const newEmployee = req.body.newEmployee
+        // await AddEmployee(newEmployee);
+        console.log(req.body)
+        return res.status(200).send();
+    } catch (err) {
+        console.log(err)
+        return res.status(500).send({ message: err.message })
+    }
+});
+
 router.patch('/modify-employee', async (req, res) => {
     try {
 

@@ -14,18 +14,21 @@ const SubscribeForm = (props) => {
     const {userData, userDataDispatch} = useContext(UserContext);
     const {modalDataDispatch} = useContext(ModalContext);
     const {contentDataDispatch} = useContext(DataContext);
-    const [inputClasses, setInputClasses] = useState(["", "", "", "", "", ""]);
-    const [invalidMessages, setInvalidMessages] = useState(["", "", "", "", "", ""]);
-    const [validInputs, setValidInputs] = useState([false, false, false, false, false, false]);
+    const [inputClasses, setInputClasses] = useState(["", "", "", "", "", "", "", "", ""]);
+    const [invalidMessages, setInvalidMessages] = useState(["", "", "", "", "", "", "", "", ""]);
+    const [validInputs, setValidInputs] = useState([false, false, false, false, false, false, false, false, false]);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [id, setId] = useState("");
     const rolePlaceHolderValue = "Pick a Role:"
     const [role, setRole] = useState(rolePlaceHolderValue);
     const [phone, setPhone] = useState("");
 
     const currentRoute = getRouteFromLocation(useLocation());
-    const setUsageOnLogin = ()=>{
+    const setUsageOnLogin = () => {
         const startTime = Date.now()
         contentDataDispatch(setDataAction({
             routeData: {route: currentRoute, timestamp: startTime},
@@ -95,10 +98,12 @@ const SubscribeForm = (props) => {
 
     const onBlurPhone = (event) => {
         const newPhoneNumber = event.target.value.trim();
+
         function isValidPhoneNumber(phoneNumber) {
             const phoneNumberPattern = /^05\d{8}$/;
             return phoneNumberPattern.test(phoneNumber);
         }
+
         validateInput(
             newPhoneNumber,
             5,
@@ -169,10 +174,65 @@ const SubscribeForm = (props) => {
         );
     };
 
+    const onBlurFirstName = (event) => {
+        const newUsername = event.target.value.trim();
+        const isUsenamevalid = (value) => {
+            return true;
+        };
+        validateInput(
+            newUsername,
+            6,
+            isUsenamevalid,
+            setFirstName,
+            "You must enter a first name",
+            "Invalid name"
+        );
+    };
+
+    const onBlurLastName = (event) => {
+        const newUsername = event.target.value.trim();
+        const isUsenamevalid = (value) => {
+            return true;
+        };
+        validateInput(
+            newUsername,
+            7,
+            isUsenamevalid,
+            setLastName,
+            "You must enter a first name",
+            "Invalid name"
+        );
+    };
+
+    const onBlurId = (event) => {
+        const newUsername = event.target.value.trim();
+        const isIdValid = (value) => {
+            return value.length == 9;
+        };
+        validateInput(
+            newUsername,
+            8,
+            isIdValid,
+            setId,
+            "You must enter an ID",
+            "Id must be exactly 9 digits"
+        );
+    };
+
     const onSubmitForm = async (event) => {
         event.preventDefault();
         try {
-            const request = {email, password, name: username, phone, role, isAdmin: !props.partOfLogin};
+            const request = {
+                email,
+                password,
+                name: username,
+                phone,
+                role,
+                firstName,
+                lastName,
+                personalId: id,
+                isAdmin: !props.partOfLogin
+            };
             console.log(request)
             const subscribeData = await subscribe(request);
             if (props.partOfLogin) userDataDispatch(loginAction(subscribeData, false));
@@ -204,6 +264,12 @@ const SubscribeForm = (props) => {
         <div className="login-form">
             <h3>Subscribe</h3>
             <form onSubmit={onSubmitForm}>
+                <input placeholder="First Name" className={inputClasses[6]} onBlur={onBlurFirstName}/>
+                {invalidMessages[6] !== "" && <div className="invalid-message">{invalidMessages[6]}</div>}
+                <input placeholder="Last Name" className={inputClasses[7]} onBlur={onBlurLastName}/>
+                {invalidMessages[7] !== "" && <div className="invalid-message">{invalidMessages[7]}</div>}
+                <input placeholder="ID" className={inputClasses[8]} onBlur={onBlurId}/>
+                {invalidMessages[8] !== "" && <div className="invalid-message">{invalidMessages[8]}</div>}
                 <input placeholder="Username" className={inputClasses[0]} onBlur={onBlurUsername}/>
                 {invalidMessages[0] !== "" && <div className="invalid-message">{invalidMessages[0]}</div>}
                 <input placeholder="Email" className={inputClasses[1]} onBlur={onBlurEmail}/>
@@ -215,7 +281,7 @@ const SubscribeForm = (props) => {
                 {invalidMessages[3] !== "" && <div className="invalid-message">{invalidMessages[3]}</div>}
                 <select value={role} className={inputClasses[4]} onChange={onBlurRole}>
                     <option value={rolePlaceHolderValue}>{rolePlaceHolderValue}</option>
-                    <option value="Seller" >Seller</option>
+                    <option value="Seller">Seller</option>
                     <option value="Cook">Cook</option>
                     <option value="Manager">Manager</option>
                 </select>
