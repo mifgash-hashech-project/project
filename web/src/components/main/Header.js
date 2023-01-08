@@ -104,8 +104,6 @@ export default function Header() {
         for (const link of linksArray){
             links.push(<Link name={link} alias={linksMap[link]} key={nanoid()} />)
         }
-        links.push(<NavLink onClick={onClickAccount} key={nanoid()} className="account_logo" to="/account"><img src="./icons/header/‏‏account_icon__header.png" alt="account_logo" key={nanoid()}/>
-        </NavLink>)
         return links
     };
     const links = getHeaderLinks(headerRoutes);
@@ -117,6 +115,10 @@ export default function Header() {
                     {links.length > 0 && links.map((e, i) => (
                         links[i]
                     ))}
+                </div>
+                <div className="nav__bar__account">
+                    <NavLink onClick={onClickAccount} key={nanoid()} className="account_logo" to="/account"><img src="./icons/header/‏‏account_icon__header.png" alt="account_logo" key={nanoid()}/>
+                    </NavLink>
                 </div>
             </div>
             {userData.loggedIn && <div className="logout" onClick={onClickLogout}>התנתק</div>}
