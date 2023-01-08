@@ -6,7 +6,7 @@
   height: 4rem;
 }
 .footer{
-  padding: 0.025rem;
+  padding: 0.05rem;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -14,16 +14,22 @@
   background: $myWhite;
   z-index: 100;
   overflow-x: scroll;
+  height: 100%;
+  width: 100%;
 }
 
 .icon__container{
   display: flex;
+
 }
 
 
 .icon{
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.25rem;
+
+
 }
 
 
