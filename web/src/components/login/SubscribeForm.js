@@ -9,6 +9,7 @@ import {UserContext} from '../../contexts/UserContext';
 import {subscribe} from '../../server/login';
 import {getAdminsData, getRouteFromLocation} from '../../server/utils';
 import {useLocation} from "react-router-dom";
+import isInt from "validator/es/lib/isInt";
 
 const SubscribeForm = (props) => {
     const {userData, userDataDispatch} = useContext(UserContext);
@@ -207,7 +208,7 @@ const SubscribeForm = (props) => {
     const onBlurId = (event) => {
         const newUsername = event.target.value.trim();
         const isIdValid = (value) => {
-            return value.length == 9;
+            return value.length == 9 && isInt(value);
         };
         validateInput(
             newUsername,
