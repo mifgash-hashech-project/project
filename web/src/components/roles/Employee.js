@@ -1,15 +1,16 @@
 import React from 'react'
 
-export default function Employee({id, education, phone, email, hobbies}) {
+export default function Employee({personalid, firstname, lastname, phone, email, role}) {
 
     return (
         <div className="employee">
             <ul>
-                <li>ID: {id}</li>
-                <li>Education: {education}</li>
+                <li>First Name: {firstname}</li>
+                <li>Last Name: {lastname}</li>
+                <li>ID: {personalid}</li>
+                <li>Role: {role}</li>
                 <li>Phone: {phone}</li>
                 <li>Email: {email}</li>
-                <li>Hobbies: {hobbies}</li>
             </ul>
         </div>
     )

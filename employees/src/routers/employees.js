@@ -9,7 +9,7 @@ const router = new express.Router();
 router.get('/get-employees', async (req, res) => {
     try {
         const employees = await getEmployees(postgresClient);
-        return res.send(employees);
+        return res.send({employees});
     } catch (err) {
         console.log(err)
         return res.status(500).send({ message: err.message })

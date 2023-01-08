@@ -18,7 +18,6 @@ export default function Roles() {
         setShowEmployeesText(text)
         const employees = await getEmployees();
         setEmployeesData(employees)
-        setUpdateEmployee(false);
     }
     const onClickUpdateEmployees = async () => {
        setUpdateEmployee(!updateEmployee);
@@ -38,7 +37,6 @@ export default function Roles() {
         <div className="roles__container">
             <div className="employees__buttons_container">
                 <button  onClick={onClickShowEmployees}>{showEmployeesText}</button>
-                <button  onClick={onClickUpdateEmployees}>Add/Update employee</button>
             </div>
             {showEmployees && <Employees employeesList={employeesData}/>}
             <Profiles/>

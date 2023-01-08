@@ -9,11 +9,12 @@ export default function Employees({employeesList}) {
 
             {employeesList.length > 0 && employeesList.map((e, i) => (
                 <Employee
-                    id={employeesList[i].id}
-                    education={employeesList[i].education}
+                    firstname={employeesList[i].firstname}
+                    lastname={employeesList[i].lastname}
+                    personalid={employeesList[i].personalid}
                     phone={employeesList[i].phone}
                     email={employeesList[i].email}
-                    hobbies={employeesList[i].hobbies}
+                    role={employeesList[i].role}
                     key={nanoid()}
                 />
             ))}
