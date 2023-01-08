@@ -9,6 +9,7 @@ export default function FooterIcon({ name, path}) {
     const { contentData, contentDataDispatch } = useContext(DataContext);
     const { userData } = useContext(UserContext);
     const nameLower = path.toLowerCase().trim();
+    const logoName = nameLower.toUpperCase();
     const onClickIcon = async ()=>{
         if (userData.loggedIn){
             const now = Date.now();
@@ -19,8 +20,8 @@ export default function FooterIcon({ name, path}) {
     }
     return (
         <NavLink to={`/${nameLower}`} className="nav" activeClassName="nav_active" onClick={onClickIcon}>
-            <img className="icon" src={`./icons/footer/‏‏News.png`} alt="icon" />
-            <img className="icon__active" src={`./icons/footer/‏‏News__active.png`} alt="icon" />
+            <img className="icon" src={`./icons/footer/‏‏${logoName}.png`} alt="icon" />
+            <img className="icon__active" src={`./icons/footer/‏‏${logoName}__active.png`} alt="icon" />
             <div className="icon__text">{name}</div>
         </NavLink>
     )
