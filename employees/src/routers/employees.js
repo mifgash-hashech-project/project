@@ -1,9 +1,8 @@
 const express = require('express');
 const {getEmployees} = require("../controllers/getEmployees");
-const AddEmployee = require("../employees/addEmployee");
 const modifyEmployee = require("../employees/modifyEmployee");
 const postgresClient = require("../db/postgres")
-const {saveEmployee} = require("../db/table");
+const {saveEmployee} = require("../controllers/addEmployee");
 const router = new express.Router();
 
 router.get('/get-employees', async (req, res) => {
