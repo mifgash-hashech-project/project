@@ -1,5 +1,5 @@
 const express = require('express');
-const getEmployees = require("../employees/getEmployees");
+const {getEmployees} = require("../controllers/getEmployees");
 const AddEmployee = require("../employees/addEmployee");
 const modifyEmployee = require("../employees/modifyEmployee");
 const postgresClient = require("../db/postgres")
@@ -8,8 +8,8 @@ const router = new express.Router();
 
 router.get('/get-employees', async (req, res) => {
     try {
-        employees = getEmployees();
-        return res.send({employees});
+        const employees = await getEmployees(postgresClient);
+        return res.send(employees);
     } catch (err) {
         console.log(err)
         return res.status(500).send({ message: err.message })
@@ -25,18 +25,6 @@ router.get('/get-employee/:id', async (req, res) => {
             if (employee.id == id) return res.send({employee: employee});
         }
         return res.status(404).send()
-    } catch (err) {
-        console.log(err)
-        return res.status(500).send({ message: err.message })
-    }
-});
-
-router.post('/add-employees', async (req, res) => {
-    try {
-
-        const newEmployee = req.body.newEmployee
-        await AddEmployee(newEmployee);
-        return res.status(201).send();
     } catch (err) {
         console.log(err)
         return res.status(500).send({ message: err.message })

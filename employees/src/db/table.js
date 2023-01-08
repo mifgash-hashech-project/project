@@ -10,28 +10,6 @@ const employeeScheme = {
     ]
 }
 
-async function saveEmployee(client, {
-    email,
-    phone,
-    role,
-    firstName,
-    lastName,
-    personalId, id
-}) {
-    await createTable(client, employeeScheme)
-    const entry = getEntry(employeeScheme, {
-        email,
-        phone,
-        role,
-        firstName,
-        lastName,
-        personalId
-    })
-    entry.id = id
-    const {query, values} = getEntryQuery(employeeScheme.tableName, entry)
-    saveQuery(query, values, client)
-}
-
 function getTableCreatorQuery({tableName, keys}) {
     const command = `CREATE TABLE IF NOT EXISTS ${tableName}`;
     let query = "id text PRIMARY KEY, \n";
@@ -95,5 +73,19 @@ function saveQuery(query, values, client) {
     });
 }
 
-module.exports = {saveEmployee}
+async function getQuery(tableName, client) {
+    return new Promise((resolve, reject) => {
+        client.query(`SELECT * FROM ${tableName}`, (err, res) => {
+            if (err) {
+                console.log(err.stack);
+                reject(err);
+            } else {
+                console.log(`Data is ready.`);
+                resolve(res.rows);
+            }
+        });
+    });
+}
+
+module.exports = {createTable, getEntryQuery, saveQuery, getEntry, employeeScheme, getQuery}
 
