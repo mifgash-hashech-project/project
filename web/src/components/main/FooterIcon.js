@@ -5,11 +5,18 @@ import {setDataAction} from "../../actions/DataActions";
 import {DataContext} from "../../contexts/DataContext";
 import {UserContext} from "../../contexts/UserContext";
 
+function toCamelCase(string_to_replace){
+    return string_to_replace.charAt(0).toUpperCase() + string_to_replace.slice(1);
+}
+
 export default function FooterIcon({ name, path}) {
     const { contentData, contentDataDispatch } = useContext(DataContext);
     const { userData } = useContext(UserContext);
     const nameLower = path.toLowerCase().trim();
-    const logoName = nameLower.toUpperCase();
+    const logoName = toCamelCase(path).trim();
+
+    const logoSrc = `./icons/footer/${logoName}.png`;
+    const activeLogoSrc = `./icons/footer/${logoName}__active.png`;
     const onClickIcon = async ()=>{
         if (userData.loggedIn){
             const now = Date.now();
@@ -20,8 +27,8 @@ export default function FooterIcon({ name, path}) {
     }
     return (
         <NavLink to={`/${nameLower}`} className="nav" activeClassName="nav_active" onClick={onClickIcon}>
-            <img className="icon" src={`./icons/footer/‏‏${logoName}.png`} alt="icon" />
-            <img className="icon__active" src={`./icons/footer/‏‏${logoName}__active.png`} alt="icon" />
+            <img className="icon" src={logoSrc} alt="icon" />
+            <img className="icon__active" src={activeLogoSrc} alt="icon" />
             <div className="icon__text">{name}</div>
         </NavLink>
     )

@@ -117,7 +117,7 @@ export default function Header() {
                     ))}
                 </div>
                 <div className="nav__bar__account">
-                    <NavLink onClick={onClickAccount} key={nanoid()} className="account_logo" to="/account"><img src="./icons/footer/‏‏Account__active.png" alt="account_logo" key={nanoid()}/>
+                    <NavLink onClick={onClickAccount} key={nanoid()} className="account_logo" to="/account"><img src="./icons/footer/Account__active.png" alt="account_logo" key={nanoid()}/>
                     </NavLink>
                 </div>
             </div>
