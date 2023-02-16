@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const serverURL = `http://localhost`;
+export const serverURL = `http://18.119.12.144/`;
 const authServerPort = 3003
 
 const getRole = (isAdmin) => {

@@ -30,6 +30,10 @@ services:
         SERVICE: web
     ports:
       - ${WEB_PORT}:${WEB_PORT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=Host(`sheikh.mlevy.org`)"
+      - "traefik.http.services.web.loadbalancer.server.port=${WEB_PORT}"
   employees:
     build:
       context: ..
