@@ -2,11 +2,11 @@ import axios from "axios";
 import {serverURL} from "./login";
 
 export async function saveRouteUsage(data){
-    await axios.post(`${serverURL}:3007/page-usage`, {data});
+    await axios.post(`${serverURL}/api/usage/page-usage`, {data});
 }
 
 export async function saveTotalUsage(data){
-   await axios.post(`${serverURL}:3007/app-usage`, {data});
+   await axios.post(`${serverURL}/api/usage/app-usage`, {data});
 }
 
 export function getRouteUsage({route, timestamp}, now, userId, sessionId){
