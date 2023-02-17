@@ -56,6 +56,7 @@ export default function Schedule({data}) {
 
 
     return (
+
         <table className="table-class">
             <ScheduleHeader shifts={shifts}/>
             <tbody>

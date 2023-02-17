@@ -19,6 +19,7 @@ const hebrewDaysMapping = {
 export default function WorkerData({data, setScheduleDataFunc}) {
 
     return (
+        <div className="table-container">
         <table className="table-class">
             <WorkerDataHeader days={days} hebrewDaysMapping={hebrewDaysMapping}/>
             <tbody>
@@ -28,5 +29,7 @@ export default function WorkerData({data, setScheduleDataFunc}) {
             ))}
             </tbody>
         </table>
+        </div>
+
     )
 }

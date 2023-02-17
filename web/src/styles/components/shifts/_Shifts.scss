@@ -3,7 +3,12 @@
   align-items: center;
 
 }
-
+.table-container{
+  max-width: 100%;
+  display: flex;
+  overflow-x: scroll;
+  flex-wrap: nowrap;
+}
 .table-class{
   align-content: center;
   tr{
@@ -13,6 +18,7 @@
     text-align: center;
 
     flex-wrap: wrap;
+    min-width: 4rem;
   }
   input{
     text-align: center;
