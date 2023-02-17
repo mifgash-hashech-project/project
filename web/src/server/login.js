@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const serverURL = `http://18.119.12.144/`;
+export const serverURL = `http://${process.env.REACT_APP_SERVER_URL}`;
 const authServerPort = 3003
 
 const getRole = (isAdmin) => {
